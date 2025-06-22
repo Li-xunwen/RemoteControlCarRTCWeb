@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Ｌixunwen-9/18 -->
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="./assets/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Basic Video Call -- Agora</title>
+    <link rel="stylesheet" href="./assets/bootstrap.min.css">
+    <link rel="stylesheet" href="./common/common.css">
+    <link rel="stylesheet" href="./common/controller.css">
+</head>
+
+<body>
+    <!-- <div class="container">
+         left 
+        <section class="left"></section> 
+         right -
+        <section class="right row">
+      
+
+        </section>
+
+    </div> -->
+    <!-- ///////////////////// -->
+    <!-- video -->
+    <!-- <div class="video-group col-md-12 col-lg-6"> -->
+        <!-- local stream -->
+        <!-- <section class="card">
+            <div class="card-header">
+                local stream
+            </div>
+            <div class="card-body">
+                <div id="local-player" class="player">
+                    <div class="card-text local-player-name" id="local-player-name"></div>
+                </div>
+            </div>
+        </section> -->
+        <!-- remote stream -->
+
+    <!-- </div> -->
+<section class="card">
+    <div class="card-header">
+        Common Stream
+    </div>
+    <div class="card-body" id="video-container">
+        <div id="local-player" class="player">
+            <div class="player-name" id="local-player-name">Local Stream</div>
+        </div>
+        <div id="remote-playerlist" class="player active">
+            <div class="player-name" id="remote-player-name">Remote Stream</div>
+        </div>
+    </div>
+</section>
+    <!--Right form -->
+    <div class="float-right">
+        <form id="join-form" name="join-form">
+            <div class="join-info-group">
+                <section class="step">
+                    <label class="form-label">App ID</label>
+                    <input class="form-control" id="appid" type="text" placeholder="enter appid">
+                    <label class="form-label">Channel</label>
+                    <input class="form-control" id="channel" type="text" placeholder="enter channel name" required>
+                    <label class="form-label">User ID(optional)</label>
+                    <input class="form-control" id="uid" type="text"
+                        onkeyup="this.value=this.value.replace(/[^0-9]/g,'')"
+                        onafterpaste="this.value=this.value.replace(/[^0-9]/g,'')" placeholder="Enter the user ID">
+                    <button type="button" id="setup-btn" class="btn btn-primary btn-sm">SetUp</button>
+                </section>
+            </div>
+            <div class="button-group">
+                <!-- Step1 -->
+                <section class="step">
+                    <label class="form-label step-title">
+                        <span>Step1</span> Create AgoraRTC Client
+                    </label>
+                    <button type="button" id="step-create" class="btn btn-primary btn-sm">Create Client</button>
+                </section>
+                <!-- Step2 -->
+                <section class="step">
+                    <label class="form-label step-title">
+                        <span>Step2</span> Join Channel
+                    </label>
+                    <button type="button" id="step-join" class="btn btn-primary btn-sm">Join Channel</button>
+                </section>
+                <!-- Step3 -->
+                <section class="step">
+                    <label class="form-label step-title">
+                        <span>Step3</span> Create Track & Publish
+                    </label>
+                    <div class="form-check">
+                        <span class="form-check-label">Mirror Mode</span>
+                        <input class="form-check-input" type="checkbox" value="" id="mirror-check" checked disabled>
+                    </div>
+                    <button type="button" id="step-publish" class="btn btn-primary btn-sm">Create Track &
+                        Publish</button>
+                    <!-- audio and video -->
+                    <div class="form-group">
+                        <label class="form-label mt-2" style="font-size: 82%;">Microphone</label>
+                        <select class="form-select mic-list">
+                            <option value="Default">Default</option>
+                        </select>
+                        <label class="form-label mt-2" style="font-size: 82%;">Camera</label>
+                        <select class="form-select cam-list">
+                            <option value="Default">Default</option>
+                        </select>
+                    </div>
+                </section>
+                <!-- Step4 -->
+                <section class="step">
+                    <label class="form-label step-title">
+                        <span>Step4</span> Subscribe & Play
+                    </label>
+                    <input class="form-control" type="text" id="remote-uid" placeholder="Please input remote userId"
+                        style="max-width: 300px;">
+                    <div class="mt-2 mb-2">
+                        <span class="form-check audio-check">
+                            <input class="form-check-input" type="checkbox" value="" id="audio-check" checked>
+                            <label class="form-check-label" for="audio-check">Audio</label>
+                        </span>
+                        <span class="form-check video-check">
+                            <input class="form-check-input" type="checkbox" value="" id="video-check" checked>
+                            <label class="form-check-label" for="video-check">Video</label>
+                        </span>
+                    </div>
+                    <button type="button" id="step-subscribe" class="btn btn-primary btn-sm">Subscribe &
+                        Play</button>
+                </section>
+                <!-- Step5 -->
+                <section class="step">
+                    <label class="form-label step-title">
+                        <span>Step5</span> Leave Channel
+                    </label>
+                    <button type="button" id="step-leave" class="btn btn-danger btn-sm" disabled>Leave
+                        Channel</button>
+                </section>
+            </div>
+        </form>
+        <!-- 添加开关按钮 -->
+    <div class="toggle-switch">
+        <label class="switch">
+            <input type="checkbox" id="toggle-view">
+            <span class="slider round"></span>
+        </label>
+        <span class="switch-label">Switch Perspective</span>
+    </div>
+    </div>
+<!--Left form -->
+<div class="left-sidebar">
+    <h3>Serialport</h3>
+    <div class="form-group">
+        <label for="baud-rate">bpsSET</label>
+        <input type="number" id="baud-rate" class="form-control" placeholder="bpsSET" value="115200">
+    </div>
+    <div class="form-group">
+        <button id="open-port" class="btn btn-primary">Open Serialport</button>
+    </div>
+    <div class="form-group">
+        <label for="message-view">Message</label>
+        <div id="message-view" class="message-container"></div>
+    </div>
+    <div class="form-group message-send">
+        <button id="clear-messages" class="btn btn-secondary">Clear</button>
+        <input type="text" id="message-input" class="form-control" placeholder="Input Message">
+        <button id="send-message" class="btn btn-primary">Send</button>
+    </div>
+<button id="buttonA">A</button>
+<button id="buttonB">B</button>
+<button id="buttonC">C</button>
+<button id="buttonD">D</button>
+<button id="buttonE">E</button>
+<button id="buttonF">F</button>
+<button id="buttonG">G</button>
+<button id="buttonH">H</button>
+
+<label for="headlight-slider">HLight:</label>
+<input type="range" id="headlight-slider" min="0" max="255" value="0">
+<span id="headlight-value">0</span>
+
+<label for="rearlight-slider">RLight:</label>
+<input type="range" id="rearlight-slider" min="0" max="255" value="0">
+<span id="rearlight-value">0</span>
+
+
+<form id="numberForm">
+    <label for="leftLimit">leftLimit:</label>
+    <input type="number" id="leftLimit" name="leftLimit" value="0"><br><br>
+
+    <label for="middle">middle:</label>
+    <input type="number" id="middle" name="middle" value="126"><br><br>
+
+    <label for="rightLimit">rightLimit:</label>
+    <input type="number" id="rightLimit" name="rightLimit" value="255"><br><br>
+    
+    <label for="GasPedalLimit">GasPedalLimit:</label>
+    <input type="number" id="GasPedalLimit" name="GasPedalLimit" value="100"><br><br>
+    
+    <button type="submit">submit</button>
+</form>
+
+</div>
+   
+    <!-- Xbox Lixunwen-->
+    <div id="controller">
+        <div id="left-stick" class="stick">
+            <div class="stick-indicator"></div>
+        </div>
+        <div id="right-stick" class="stick">
+            <div class="stick-indicator"></div>
+        </div>
+    </div>
+    <!-- app info -->
+    <div id="app-info"></div>
+    <script src="./assets/jquery-3.4.1.min.js"></script>
+    <script src="./assets/bootstrap.bundle.min.js"></script>
+    <script src="./common/constant.js"></script>
+    <script src="./sso/index.js"></script>
+    <script src="./common/utils.js"></script>
+    <script src="./common/left-menu.js"></script>
+    <script src="./i18n/language.js"></script>
+    <script src="https://download.agora.io/sdk/release/AgoraRTC_N.js"></script>
+    <script src="./index.js"></script>
+
+    
+</body>
+
+</html>

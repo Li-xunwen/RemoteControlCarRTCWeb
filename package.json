@@ -1,0 +1,19 @@
+{
+  "name": "api-examples-web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node ./scripts/server.js",
+    "pure": "node ./scripts/pure.js"
+  },
+  "devDependencies": {
+    "express": "^4.19.2"
+  },
+  "author": "qz",
+  "license": "ISC",
+  "dependencies": {
+    "save": "^2.9.0",
+    "serialport": "^12.0.0"
+  }
+}

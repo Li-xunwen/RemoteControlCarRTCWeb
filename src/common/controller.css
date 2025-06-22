@@ -1,0 +1,58 @@
+/* controller.css */
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f0;
+  margin: 0;
+}
+
+#controller {
+  position: fixed; /* 确保元素固定在页面上 */
+  z-index: 9999; /* 设置较大的 z-index 使其处于最上层 */
+  width: 100%; /* 使控制器宽度占满页面 */
+  height: 100%; /* 使控制器高度占满页面 */
+  pointer-events: none; /* 使控制器不影响页面其他元素的点击事件 */
+}
+
+.stick {
+  position: absolute; /* 使摇杆绝对定位 */
+  width: 100px;
+  height: 100px;
+  background-color: #ddd;
+  border-radius: 50%;
+  pointer-events: auto; /* 使摇杆可以响应点击事件 */
+}
+
+#left-stick {
+  left: 20px; /* 左侧距离页面边缘 20px */
+  bottom: 20px; /* 底部距离页面边缘 20px */
+}
+
+#right-stick {
+  right: 20px; /* 右侧距离页面边缘 20px */
+  bottom: 20px; /* 底部距离页面边缘 20px */
+}
+
+.stick-indicator {
+  position: absolute; /* 使指示器绝对定位 */
+  width: 40px; /* 设置更大的尺寸 */
+  height: 40px; /* 设置更大的尺寸 */
+  background-color: #888; /* 设置灰色 */
+  border-radius: 50%;
+  top: 50%; /* 初始位置在父容器中心 */
+  left: 50%; /* 初始位置在父容器中心 */
+  transform: translate(-50%, -50%); /* 确保指示器中心对齐 */
+}
+
+.form-label mt-2{
+  font-size: 80%;
+}
+
+
+
+
+
+
