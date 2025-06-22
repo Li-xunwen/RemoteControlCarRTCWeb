@@ -32,7 +32,7 @@ jobs:
         uses: actions/configure-pages@v4 # 配置 Pages 部署环境
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2 # 上传构建好的文件作为 Pages 工件
+        uses: actions/upload-pages-artifact@v3 # 上传构建好的文件作为 Pages 工件
         with:
           path: './dist' # 非常重要！替换为你的构建输出目录（例如： 'build', 'dist', 'public', 'out'）
 
