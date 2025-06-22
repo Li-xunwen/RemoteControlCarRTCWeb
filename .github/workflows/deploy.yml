@@ -1,0 +1,41 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ] # 当代码推送到 'main' 分支时触发。如果你的主分支是 'master'，请修改为 [ master ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest # 使用最新的 Ubuntu 运行器
+
+    permissions: 
+      contents: write # 允许工作流写入内容（推送到 gh-pages 分支）
+      pages: write # 允许工作流部署 GitHub Pages
+      id-token: write # 允许 OIDC 认证（用于部署）
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4 # 检出你的仓库代码
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # 指定你项目需要的 Node.js 版本（如 18, 20）
+
+      - name: Install dependencies
+        run: npm ci # 使用 package-lock.json 精确安装依赖，比 npm install 更快更可靠
+
+      - name: Build project
+        run: npm run dev # 运行你的构建命令，生成静态文件
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4 # 配置 Pages 部署环境
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2 # 上传构建好的文件作为 Pages 工件
+        with:
+          path: './dist' # 非常重要！替换为你的构建输出目录（例如： 'build', 'dist', 'public', 'out'）
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4 # 执行部署到 Pages
